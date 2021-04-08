@@ -1,0 +1,32 @@
+QListWidget{
+	/* font-weight: bold ;bold-加粗 */
+	font-size: 13px;
+	 color:#e7f5f5;
+	 /* background-color:white; */
+	 border:0px solid #ffffff;
+	}
+QListWidget::Item{
+	height: 30px;;
+	color: black; /* 字体颜色 */
+	padding-left:60;/* item 的左右边距 */
+	border:0px solid rgb(7, 218, 147);
+
+}
+/* 鼠标悬停状态 */
+QListWidget::Item:hover{
+	color:rgba(9, 15, 2, 0.808);
+	background:transparent;
+	border:15px solid #e7f5f5;
+}
+/* 悬着 Item 之后的状态 */
+QListWidget::Item:selected{
+   /* border-image:url(":/images/stop.png"); */
+	 background-color: aquamarine;
+	 color:#f74417;
+	 border:15px solid #e7f5f5;
+}
+QListWidget::Item:selected:active{
+	background-color:#e7f5f5;
+	color:#ec31e3;
+	border: width 20px;;
+} 

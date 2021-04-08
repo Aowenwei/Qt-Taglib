@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Lyric</class>
+ <widget class="QWidget" name="Lyric">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>713</width>
+    <height>448</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="horizontalSpacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="album_image">
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/pictrue/cover.jpg);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>音乐标题：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labe_Title">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_close">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-image: url(:/images/max.png);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="labe_6">
+           <property name="maximumSize">
+            <size>
+             <width>45</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>专辑：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labe_album">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="maximumSize">
+            <size>
+             <width>45</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>作者：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labe_Aritst">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLabel" name="lab_lyric">
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>340</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;quot;music.h&amp;quot;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;quot;./ui_music.h&amp;quot;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;quot;collect.h&amp;quot;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;quot;player.h&amp;quot;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;quot;search.h&amp;quot;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;QDebug&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;QFileDialog&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;QKeyEvent&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;QListWidgetItem&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;QMediaPlayer&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;QMediaPlaylist&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;QMessageBox&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;QTableWidget&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;attachedpictureframe.h&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;id3v2frame.h&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;id3v2tag.h&amp;gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;#include &amp;lt;mpegfile.h&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="btn_like">
+       <property name="text">
+        <string>喜欢</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_collect">
+       <property name="text">
+        <string>收藏</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_download">
+       <property name="text">
+        <string>下载</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

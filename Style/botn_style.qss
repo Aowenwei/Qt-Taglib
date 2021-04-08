@@ -1,0 +1,74 @@
+QPushButton#btn_prev{
+border-image: url(":/images/prev.png");
+}
+
+QPushButton#btn_next{
+border-image: url(":/images/next.png");
+}
+
+QPushButton#btn_stop{
+border-image: url(":/images/pause.png");
+background-color: aquamarine;
+}
+
+QPushButton#btn_volum{
+border-image: url(":/images/volume.png");
+}
+
+QPushButton#btn_lyric{
+border-image: url(":/images/lyric.png");
+}
+
+QPushButton#btn_pictrue:hover{
+border-image: url(":/images/max.png");
+}
+/*设置圆角,去掉边框*/
+QPushButton#btn_prev,#btn_next,#btn_stop,#btn_volum,#btn_lyric,#btn_pictrue {
+border-radius: 8px !important; /*边界半径(越大，圆角越大)， important 强制 */
+}
+
+
+QPushButton:disabled{
+color: blue;
+border-color: brown;
+background-color: aqua;
+}
+QPushButton:pressed{
+/*背景颜色*/
+background-color:rgb(14 , 135 , 228);
+/*左内边距为3像素，让按下时字向右移动3像素*/
+padding-left:3px;
+/*上内边距为3像素，让按下时字向下移动3像素*/
+padding-top:3px;
+}
+QPushButton:hover{
+border-color: green;
+background-color: hsl(192, 91%, 46%);
+}
+
+
+/*滑动条槽（整体）的美化 */
+QSlider::groove:horizontal{ 
+		/*滑块的高度*/
+		height: 7px; 
+		left: 0px; 
+		right: 0px; 
+		border:0px;                /*指定无边框*/
+	  border-radius:6px;       /*指定圆角*/
+		background:rgba(0,0,0,50);
+ } 
+/*滑块的美化*/
+ QSlider::handle:horizontal{ 
+	 /*图片的高，宽*/
+		width:  11px; 
+		height: 10px; 
+		margin-top: -20px; 
+		margin-left: 0px; 
+		margin-bottom: -20px; 
+		margin-right: 0px; 
+ 		border-image:url(:images/setting_slider_handle.png);
+} 
+/*已滑过的进度美化*/
+QSlider::sub-page:horizontal{
+	   background:green;
+}

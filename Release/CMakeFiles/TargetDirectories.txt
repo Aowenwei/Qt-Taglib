@@ -1,0 +1,4 @@
+/home/zzk/Desktop/Qt-TagLib-master/Release/CMakeFiles/rebuild_cache.dir
+/home/zzk/Desktop/Qt-TagLib-master/Release/CMakeFiles/Music.dir
+/home/zzk/Desktop/Qt-TagLib-master/Release/CMakeFiles/edit_cache.dir
+/home/zzk/Desktop/Qt-TagLib-master/Release/CMakeFiles/Music_autogen.dir

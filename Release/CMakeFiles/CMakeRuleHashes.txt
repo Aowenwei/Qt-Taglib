@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+e02d052f2fd05fac997480d24377461d CMakeFiles/Music_autogen
+4654d7e1f6b47dc110c7ee76c9a373c0 qrc_resource.cpp
