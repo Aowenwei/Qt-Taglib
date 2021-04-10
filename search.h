@@ -16,6 +16,7 @@ class Search : public QWidget {
 public:
   explicit Search(QWidget *parent = nullptr);
   ~Search();
+  void initTableWidget();
   void parseJson(QString &json);
   void playerUrl(const int ID);
   void setMessage(QString &Title, QString &Album, QString &Artist);

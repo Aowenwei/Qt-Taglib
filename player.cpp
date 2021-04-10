@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-07 23:20:05
- * @LastEditTime: 2021-04-07 16:00:55
+ * @LastEditTime: 2021-04-10 23:15:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /QtCode/Music/player.cpp

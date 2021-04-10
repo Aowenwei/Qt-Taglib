@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-08 08:57:10
- * @LastEditTime: 2021-04-08 16:07:42
+ * @LastEditTime: 2021-04-10 23:24:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /QtCode/Music/search.cpp
@@ -21,13 +21,13 @@
 QVector<int> Search::Song_ID{};
 
 Search::Search(QWidget *parent) : QWidget(parent), ui(new Ui::Search) {
+  ui->setupUi(this);
+  initTableWidget();
   Net_Manage = new QNetworkAccessManager(this);
   Net_Request = new QNetworkRequest{};
 
   connect(Net_Manage, &QNetworkAccessManager::finished, this,
           &Search::on_ReplyFinish);
-
-  ui->setupUi(this);
 }
 
 Search::~Search() {
@@ -35,6 +35,16 @@ Search::~Search() {
   delete Net_Request;
 }
 
+void Search::initTableWidget() {
+  //设置触发条件：不可编辑
+  ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  ui->tableWidget->setSortingEnabled(false); //启动排序
+  // item 水平表头自适应大小
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(
+      QHeaderView::Stretch);
+  ui->tableWidget->horizontalHeader()->setDefaultSectionSize(35);
+  //
+}
 void Search::parseJson(QString &json) {
   Song_ID.clear();
   QString songanme{};
@@ -121,8 +131,6 @@ void Search::playerUrl(const int ID) {
                  .arg(*it)));
     ++it;
   }
-  Player::Playlist->setCurrentIndex(ID);
-  Player::Play->setMedia(Player::Playlist);
 }
 
 QTableWidget *Search::getSearchTableW() { return ui->tableWidget; }
@@ -149,8 +157,9 @@ void Search::on_ReplyFinish(QNetworkReply *reply) {
     parseJson(result); //该函数用于解析api接口返回的json
   } else {
     //处理错误
-    QMessageBox::information(this, tr("Error"),
-                             tr("搜索失败，请检查网络或搜索接口"));
+    QMessageBox::critical(this, tr("Error"),
+                          tr("搜索失败，请检查网络或搜索接口"),
+                          QMessageBox::NoAll);
   }
 }
 
@@ -158,5 +167,7 @@ void Search::on_tableWidget_cellDoubleClicked(int row, int) {
   Player::state = 2;
   int curID = Song_ID.at(row);
   playerUrl(curID);
+  Player::Play->setMedia(Player::Playlist);
+  Player::Playlist->setCurrentIndex(row);
   Player::Play->play(); //播放网络音乐
 }

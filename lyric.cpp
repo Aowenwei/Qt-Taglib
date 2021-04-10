@@ -12,10 +12,18 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+//正则库
+#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 Lyric::Lyric(QWidget *parent) : QWidget(parent), ui(new Ui::Lyric) {
   ui->setupUi(this);
+  Net_Manage_lyric = new QNetworkAccessManager(this);
+  Net_request_lyric = new QNetworkRequest{};
+
   Net_Manage_details = new QNetworkAccessManager(this);
   Net_Request_details = new QNetworkRequest{};
+
   connect(Net_Manage_details, &QNetworkAccessManager::finished, this,
           &Lyric::on_ReplydetailsFinish);
 }
@@ -39,6 +47,34 @@ void Lyric::setMessage(QString &Title, QString &Album, QString &Artist) {
 void Lyric::on_btn_close_clicked() {
   close();
   emit SIGN_Close(); //关闭歌词界面信号
+}
+
+void Lyric::on_setLablePlayTime() {
+  if (!getListLyricsTime().empty() &&
+      Player::Play->position() >= getListLyricsTime().at(lyricsID)) {
+    ui->lab_lyric->setText(getListLyricsText().at(lyricsID));
+    ++lyricsID;
+  }
+}
+
+//获取歌曲ID
+void Lyric::get_song_ID(QString &song) {
+  //搜索歌曲，之后解析获得音乐ID
+  QString URL = QString("http://musicapi.leanapp.cn/search?keywords=%1&limit=1")
+                    .arg(song);
+  Net_request_lyric->setUrl(QUrl(URL));
+  Net_Manage_lyric->get(*Net_request_lyric);
+
+  connect(Net_Manage_lyric, &QNetworkAccessManager::finished, this,
+          [=](QNetworkReply *reply) {
+            if (reply->error() == QNetworkReply::NoError) {
+              QByteArray byte = reply->readAll();
+              QString json(byte);
+              parse_Artist(json);
+            } else {
+              std::cout << "网络连接不稳定，无法 获取音乐ID\n\a";
+            }
+          });
 }
 
 void Lyric::Details() {
@@ -139,36 +175,6 @@ void Lyric::parse_details_Json(QString &json) {
   delete requst;
 }
 
-void Lyric::getLyric(const QString &song, const int ID) {
-  QString Artist{};
-  QString URL{};
-  QNetworkAccessManager *Net_Manage_Lyric = new QNetworkAccessManager(this);
-  QNetworkRequest *Net_Request_Lyric = new QNetworkRequest{};
-  // http://music.163.com/api/song/media?id=1815389717  歌词 APIs
-  if (ID != 0) {
-    URL = QString("http://musicapi.leanapp.cn/search?keywords=%1").arg(ID);
-  } else {
-    URL = QString("http://musicapi.leanapp.cn/search?keywords=%1").arg(song);
-    //获取ID
-  }
-  Net_Request_Lyric->setUrl(URL);
-  Net_Manage_Lyric->get(*Net_Request_Lyric);
-
-  connect(Net_Manage_Lyric, &QNetworkAccessManager::finished, this,
-          [=](QNetworkReply *reply) {
-            QVariant status_code =
-                reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-            if (reply->error() == QNetworkReply::NoError) {
-              QByteArray bytes = reply->readAll(); //获取字节
-              QString json(bytes);
-              //获取歌曲名称
-              parse_Artist(json);
-            }
-          });
-  //
-  delete Net_Request_Lyric;
-}
-
 void Lyric::parse_Artist(QString &json) {
   QByteArray byte_array;
   QJsonParseError err_rpt;
@@ -185,26 +191,72 @@ void Lyric::parse_Artist(QString &json) {
         QJsonValue name = resultArr.at(0);
         if (name.isObject()) {
           QJsonObject nameobj = name.toObject();
-          parse_Art = nameobj.value("name").toString();
+          QString SongName = nameobj.value("name").toString();
           int ID = nameobj.value("id").toInt();
           //获取歌词
           QString lyrURL =
               QString("http://music.163.com/api/song/media?id=%1").arg(ID);
-          QNetworkRequest *net_request = new QNetworkRequest;
-          QNetworkAccessManager net_manage;
-          net_request->setUrl(lyrURL);
-          net_manage.get(*net_request);
-          connect(&net_manage, &QNetworkAccessManager::finished, this,
+          QNetworkAccessManager *net_manage = new QNetworkAccessManager(this);
+          QNetworkRequest *net_request = new QNetworkRequest(lyrURL);
+          net_manage->get(*net_request);
+
+          connect(net_manage, &QNetworkAccessManager::finished, this,
                   [=](QNetworkReply *reply) {
+                    QString name = SongName;
                     QByteArray byte = reply->readAll();
-                    write_File(QString("/Lyric/%1.lrc").arg(parse_Art), byte);
+                    write_File(QString("/Lyric/%1.lrc").arg(SongName), byte);
                     std::cout << "文件写入完毕\n";
+                    readLyricFile(name); //读取歌词
                   });
         }
       }
     }
   }
 }
+
+//读取lrc文件
+void Lyric::readLyricFile(QString &lrcName) {
+  QDir dir = QDir::currentPath();
+  dir.cdUp(); //上级目录
+  QString lyricpath =
+      dir.absolutePath() + QString("/Lyric/%1.lrc").arg(lrcName);
+  QFile file(lyricpath);
+
+  if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    QString str = file.readAll();
+    QRegularExpression regularExpression(
+        "\\[(\\d+)?:(\\d+)?(\\.\\d+)?\\](.*)?");
+    int index = 0;
+    QRegularExpressionMatch match;
+    match = regularExpression.match(str, index);
+    if (match.hasMatch()) {
+      int totalTime;
+      totalTime = match.captured(1).toInt() * 60000 +
+                  match.captured(2).toInt() * 1000; /*  计算该时间点毫秒数 */
+      QString currentText = QString::fromStdString(
+          match.captured(4).toStdString()); /*   获取歌词文本*/
+      listLyricsText.push_back(currentText);
+      listLyricsTime.push_back(totalTime);
+    }
+
+    ui->lab_lyric->clear();
+    for (auto x : listLyricsText) {
+      if (x.toStdString() == "\n") {
+      }
+      ui->lab_lyric->setText(x);
+    }
+
+    //
+    file.close();
+  } else {
+    std::cout << "歌词文件打开失败\a\n";
+    file.close();
+  }
+}
+
+QList<QString> Lyric::getListLyricsText() const { return listLyricsText; }
+
+QList<int> Lyric::getListLyricsTime() const { return listLyricsTime; }
 
 void write_File(const QString &filename, QByteArray &lyric) {
   QDir dir = QDir::currentPath();
@@ -213,6 +265,8 @@ void write_File(const QString &filename, QByteArray &lyric) {
   FILE *fd = fopen(curPath.toStdString().c_str(), "wb");
   if (fd != nullptr) {
     fwrite(lyric.data(), lyric.size(), 1, fd);
+    fclose(fd);
+  } else {
     fclose(fd);
   }
 }
